@@ -7,6 +7,27 @@ you have problems in your backend it manages to fail gracefully with notificatio
 
 
 
+## Installing
+
+### deps -file
+```
+[XiAjaxBundle]
+    git=http://github.com/xi-project/xi-bundle-ajax.git
+    target=/bundles/Xi/Bundle/AjaxBundle
+```
+
+### autoload.php file
+```php
+<?php
+'Xi\\Bundle'       => __DIR__.'/../vendor/bundles',
+?>
+```
+### appKernel.php -file
+```php
+<?php
+            new Xi\Bundle\AjaxBundle\XiAjaxBundle(),
+ ?>
+```   
 
 ##  AjaxAbstractLogic
 This is the base class for ajax logics. You won't use this directly.
