@@ -1,0 +1,5 @@
+services:
+    xi.ajaxbundle.jsonresponse.listener:
+        class: Xi\Bundle\AjaxBundle\EventListener\JsonResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelRequest, priority: 1000}

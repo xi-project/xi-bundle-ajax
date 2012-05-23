@@ -1,0 +1,20 @@
+.errorized-element {
+    position:               absolute;
+    z-index:                10000;
+    padding:                5px 10px;
+    background:             pink;
+    color:                  red;   
+    border-radius:          4px;
+    -webkit-border-radius:  4px;
+    -moz-border-radius:     4px;
+    font-size:              14px;
+}
+
+.fatal-error-modal {
+    z-index:            9999;
+    background-color:   #000;
+    opacity:            .70;
+    top:                0px;
+    position:           absolute;
+    display:            block;
+}
