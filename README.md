@@ -1,4 +1,4 @@
-# Ajax Functionality for symfony
+# Ajax Functionality for symfony2
 
 This bundle provides basic ajax functionality for your Symfony2 project.
 You can use it in your forms and any other elements that you wish to bind to send data asyncronously.
