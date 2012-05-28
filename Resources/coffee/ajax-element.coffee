@@ -9,7 +9,7 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
 
         # if there is no initial errorizers add default form errorizer to first of errorizers
         if !errorizers
-            @errorizers  = [new App.FormErrorizer.Default()].concat(@errorizers)
+            @errorizers  = [new App.ElementErrorizer.Default()].concat(@errorizers)
 
         @bind(@getConfiguration())
 
