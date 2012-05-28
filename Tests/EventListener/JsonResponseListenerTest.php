@@ -10,7 +10,7 @@ use Xi\Bundle\AjaxBundle\EventListener\JsonResponseListener,
     Symfony\Component\HttpFoundation\HeaderBag;
 
 /**
- * @author Mikko Hirvonen <mikko.hirvonen@soprano.fi>
+ * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  * @author Henri Vesala <henri.vesala@gmail.com>
  * @group sba
  * @group sba-eventlistener

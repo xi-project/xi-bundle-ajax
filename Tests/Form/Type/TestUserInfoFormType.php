@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType,
     Symfony\Component\Form\FormBuilder;
 
 /**
- * @author Mikko Hirvonen <mikko.hirvonen@soprano.fi>
+ * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  */
 class TestUserInfoFormType extends AbstractType
 {

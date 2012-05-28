@@ -14,7 +14,7 @@ use Xi\Bundle\AjaxBundle\Controller\JsonResponseController as Controller,
     Symfony\Component\Translation\Loader\ArrayLoader;
     
 /**
- * @author Mikko Hirvonen <mikko.hirvonen@soprano.fi>
+ * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  * @author Henri Vesala <henri.vesala@gmail.com>
  * @group sba
  * @group sba-controller
