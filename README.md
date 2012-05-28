@@ -81,7 +81,7 @@ Messages stays in place until you submit that form again unless you manualy defi
 The template also includes AjaxElement functionality that helps you to bind ajax functionality to any element.
 Of course you would mostlikely use it in anchors. 
 
-1.  Make sure that you initialize AjaxElement in your CoffeeScript file: `new App.AjaxElement.Default '.ajax-element'`
+1.  Make sure that you initialize AjaxElement in your CoffeeScript file: `new App.AjaxElement.Default '.ajax-link'`
     - The first argument is required. It specifies the elements you would like to ajaxify.
 2.  Make a form with class named after your identifier: `<a class="ajax-form" href="your action"... >`
 3.  You can make your own instances of AjaxElement. Just extend the abstract base class.
