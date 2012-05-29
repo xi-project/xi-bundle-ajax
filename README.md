@@ -49,7 +49,7 @@ The template includes AjaxForm functionality that helps you to make ajax functio
 
 namespace My\ProjectBundle\Controller;
 
-use SBA\GenericBundle\Controller\JsonResponseController;
+use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 
 class MyController extends JsonResponseController
 {
@@ -93,7 +93,7 @@ Of course you would mostlikely use it in anchors.
 
 namespace My\ProjectBundle\Controller;
 
-use SBA\GenericBundle\Controller\JsonResponseController;
+use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 
 class MyController extends JsonResponseController
 {

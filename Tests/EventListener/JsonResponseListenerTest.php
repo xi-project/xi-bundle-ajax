@@ -12,9 +12,8 @@ use Xi\Bundle\AjaxBundle\EventListener\JsonResponseListener,
 /**
  * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  * @author Henri Vesala <henri.vesala@gmail.com>
- * @group sba
- * @group sba-eventlistener
- * @group sba-json-response
+ * @group  xi
+ * @group  xi-json-response-listener
  */
 class JsonResponseListenerTest extends PHPUnit_Framework_TestCase
 {
