@@ -1,8 +1,8 @@
-if require?
-    require "../../../JsTestBundle/Resources/config/init-test.coffee"
-
-    # file to test    
-    require "../../Resources/coffee/ajax-element.coffee"
+require "./init.coffee"
+require "../../Resources/coffee/ajax-abstract-logic.coffee"
+require "../../Resources/coffee/ajax-form.coffee"
+require "../../Resources/coffee/ajax-element.coffee"
+require "../../Resources/coffee/ajax-loader.coffee"
 
 describe "ajax-element", ->
 
@@ -34,9 +34,6 @@ describe "ajax-element", ->
         spyOn ajaxElement, "handleSuccess"
 
         element.click()
-
-        # expect(ajaxElement.currentElement).not.toBeNull()
-        # expect(ajaxElement.currentElement.attr('id')).toEqual "linkster"
 
         expect(ajaxElemConfig.beforeSubmit).toHaveBeenCalled()
         expect(ajaxElement.preHandleResponse).toHaveBeenCalled()
