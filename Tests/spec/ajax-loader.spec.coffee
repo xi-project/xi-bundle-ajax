@@ -2,7 +2,6 @@ require "./init.coffee"
 require "../../Resources/coffee/ajax-loader.coffee"
 
 describe "ajax-loader", ->
-
     container = $('<div id="container"></div>')
     loader = null
 
@@ -17,6 +16,7 @@ describe "ajax-loader", ->
         expect(loader).toBeDefined()
         loader.start()
         expect(container.find('#ajax-loader').length).toBeGreaterThan(0)
+        loader.stop()
 
     it "stops the loader", ->
         loader.stop()
@@ -30,3 +30,17 @@ describe "ajax-loader", ->
         loader.start()
         loader.start()
         expect(container.find('#ajax-loader').length).toEqual(1)
+        loader.stop()
+
+    it "is not running when it's not started", ->
+        expect(loader.isRunning()).toBe(false)
+
+    it "is running when it's started", ->
+        loader.start()
+        expect(loader.isRunning()).toBe(true)
+        loader.stop()
+
+    it "stops running when it's stopped", ->
+        loader.start()
+        loader.stop()
+        expect(loader.isRunning()).toBe(false)
