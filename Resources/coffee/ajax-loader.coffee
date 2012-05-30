@@ -15,6 +15,9 @@ class App.AjaxLoader.Abstract
             @onStop()
             running = false
 
+    isRunning: ->
+        running
+
     # Implement me in a child class.
     # onStart: ->
 
