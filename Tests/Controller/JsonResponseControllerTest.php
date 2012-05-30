@@ -2,39 +2,52 @@
 
 namespace Xi\Bundle\AjaxBundle\Tests\Controller;
 
-use Xi\Bundle\AjaxBundle\Controller\JsonResponseController as Controller,
-    SBA\Component\Test\ContainerTestCase,
-    Xi\Bundle\AjaxBundle\Tests\Model\TestUser,
-    Xi\Bundle\AjaxBundle\Tests\Form\Type\TestUserInfoFormType,
-    Symfony\Component\Form\Form,
-    Symfony\Component\Form\FormBuilder,
-    Symfony\Component\DependencyInjection\ContainerBuilder,
-    Symfony\Component\Translation\Translator,
-    Symfony\Component\Translation\MessageSelector,
-    Symfony\Component\Translation\Loader\ArrayLoader;
+use PHPUnit_Framework_TestCase;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Extension\Core\CoreExtension;
+use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
+use Xi\Bundle\AjaxBundle\Tests\Model\TestUser;
+use Xi\Bundle\AjaxBundle\Tests\Form\Type\TestUserInfoFormType;
     
 /**
- * @author Mikko Hirvonen <mikko.hirvonen@soprano.fi>
+ * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  * @author Henri Vesala <henri.vesala@gmail.com>
- * @group sba
- * @group sba-controller
- * @group sba-json-response
+ * @group  xi
+ * @group  xi-json-response-controller
  */
-class JsonResponseControllerTest extends ContainerTestCase
+class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Controller
      */
     private $controller;
 
+    /**
+     * @var Container
+     */
+    private $container;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->controller = new Controller();
-        
-        $container = $this->getContainer();
-        $this->controller->setContainer($container);
+        $this->controller = new JsonResponseController();
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator->expects($this->any())
+                   ->method('trans')
+                   ->will($this->returnCallback(function($trans) {
+                       return 'translated ' . $trans;
+                   }));
+
+        $this->container = new Container();
+        $this->container->set('translator', $translator);
+
+        $this->controller->setContainer($this->container);
     }
 
     /**
@@ -208,16 +221,13 @@ class JsonResponseControllerTest extends ContainerTestCase
     public function formErrorsWithFailedChildren()
     {
         $form = $this->createUserForm();
+        $form->get('name')->addError(new FormError('xoo'));
 
-        $form->bind(array());
-        
-        $this->loadValidationMessageTranslator();
-        
         $this->assertEquals(
             array(
                 'my_form' => array(
                     'childErrors' => array(
-                        'name' => array('translated.This value should not be blank')
+                        'name' => array('translated xoo')
                     ),
                 ),
             ),
@@ -231,19 +241,17 @@ class JsonResponseControllerTest extends ContainerTestCase
     public function formErrorsWithFailedChildrenAndGrandchildren()
     {
         $form = $this->createUserWithChildForm();
+        $form->get('name')->addError(new FormError('xoo'));
+        $form->get('userInfo')->get('address')->addError(new FormError('bar'));
 
-        $form->bind(array());
-
-        $this->loadValidationMessageTranslator();
-        
         $this->assertEquals(
             array(
                 'my_form' => array(
                     'childErrors' => array(
-                        'name'     => array('translated.This value should not be blank'),
+                        'name'     => array('translated xoo'),
                         'userInfo' => array(
                             'childErrors' => array(
-                                'address' => array('translated.This value should not be blank'),
+                                'address' => array('translated bar'),
                             ),
                         ),
                     ),
@@ -259,10 +267,7 @@ class JsonResponseControllerTest extends ContainerTestCase
     public function formErrorsWithFailedChildrenAndGrandchildren2()
     {
         $form = $this->createUserWithChildForm();
-
-        $form->bind(array('name' => 'xoo'));
-
-        $this->loadValidationMessageTranslator();
+        $form->get('userInfo')->get('address')->addError(new FormError('bar'));
         
         $this->assertEquals(
             array(
@@ -270,7 +275,7 @@ class JsonResponseControllerTest extends ContainerTestCase
                     'childErrors' => array(
                         'userInfo' => array(
                             'childErrors' => array(
-                                'address' => array('translated.This value should not be blank'),
+                                'address' => array('translated bar'),
                             ),
                         ),
                     ),
@@ -286,16 +291,13 @@ class JsonResponseControllerTest extends ContainerTestCase
     public function formErrorsDoesNotReturnErrorsForValidChildren()
     {
         $form = $this->createUserWithChildForm();
-
-        $form->bind(array('userInfo' => array('address' => 'foo')));
-
-        $this->loadValidationMessageTranslator();
+        $form->get('name')->addError(new FormError('xoo'));
         
         $this->assertEquals(
             array(
                 'my_form' => array(
                     'childErrors' => array(
-                        'name' => array('translated.This value should not be blank'),
+                        'name' => array('translated xoo'),
                     ),
                 ),
             ),
@@ -308,9 +310,7 @@ class JsonResponseControllerTest extends ContainerTestCase
      */
     private function createUserForm()
     {
-        return $this->createNamedFormBuilder()
-                   ->add('name')
-                   ->getForm();
+        return $this->createNamedFormBuilder()->add('name')->getForm();
     }
 
     /**
@@ -329,27 +329,8 @@ class JsonResponseControllerTest extends ContainerTestCase
      */
     private function createNamedFormBuilder()
     {
-        $factory = $this->getContainer()->get('form.factory');
+        $factory = new FormFactory(array(new CoreExtension()));
 
-        return $factory->createNamedBuilder(
-            'form',
-            'my_form',
-            new TestUser(),
-            array('csrf_protection' => false)
-        );
-    }
-    
-    /**
-     * 
-     * replace current translator with translator that can translate validation messages
-     */
-    private function loadValidationMessageTranslator()
-    {
-        $container = $this->getContainer();
-        
-        $translator = new Translator('en', new MessageSelector());
-        $translator->addLoader('array', new ArrayLoader());
-        $translator->addResource('array', array('This value should not be blank' => 'translated.This value should not be blank'), 'en');
-        $container->set('translator', $translator);
+        return $factory->createNamedBuilder('form', 'my_form', new TestUser());
     }
 }
