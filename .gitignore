@@ -3,3 +3,4 @@ nbproject
 /Tests/composer.phar
 /Tests/composer.lock
 /Tests/phpunit.xml
+/Tests/node_modules
