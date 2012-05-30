@@ -1,8 +1,5 @@
-if require?
-    require "../../../JsTestBundle/Resources/config/init-test.coffee"
-
-    # file to test    
-    require "../../Resources/coffee/ajax-loader.coffee"
+require "./init.coffee"
+require "../../Resources/coffee/ajax-loader.coffee"
 
 describe "ajax-loader", ->
 
