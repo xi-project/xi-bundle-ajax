@@ -1,1 +1,5 @@
 nbproject
+/Tests/vendor
+/Tests/composer.phar
+/Tests/composer.lock
+/Tests/phpunit.xml
