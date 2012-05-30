@@ -57,6 +57,16 @@ describe "ajax-element", ->
         expect(ajaxElement.handleFailure.mostRecentCall.args[0]).toEqual "failing response"
 
 
+describe "ajax element without link", ->
+    it "returns false for preSubmit when loader is running", ->
+        loader = new App.AjaxLoader.Default
+        ajaxElement = new App.AjaxElement.Default 'a#xoo', loader
+
+        spyOn(loader, 'isRunning').andReturn true
+
+        expect(ajaxElement.preSubmit()).toEqual(false)
+
+
 describe "element errorizer", ->
 
     link = $('<a id="linkster" href="#">tussi</a>')
