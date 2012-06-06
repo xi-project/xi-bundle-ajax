@@ -1,8 +1,8 @@
-if require?
-    require "../../../JsTestBundle/Resources/config/init-test.coffee"
-
-    # file to test    
-    require "../../Resources/coffee/ajax-element.coffee"
+require "./init.coffee"
+require "../../Resources/coffee/ajax-abstract-logic.coffee"
+require "../../Resources/coffee/ajax-form.coffee"
+require "../../Resources/coffee/ajax-element.coffee"
+require "../../Resources/coffee/ajax-loader.coffee"
 
 describe "ajax-element", ->
 
@@ -35,9 +35,6 @@ describe "ajax-element", ->
 
         element.click()
 
-        # expect(ajaxElement.currentElement).not.toBeNull()
-        # expect(ajaxElement.currentElement.attr('id')).toEqual "linkster"
-
         expect(ajaxElemConfig.beforeSubmit).toHaveBeenCalled()
         expect(ajaxElement.preHandleResponse).toHaveBeenCalled()
 
@@ -58,6 +55,16 @@ describe "ajax-element", ->
 
         expect(ajaxElement.handleFailure).toHaveBeenCalled()
         expect(ajaxElement.handleFailure.mostRecentCall.args[0]).toEqual "failing response"
+
+
+describe "ajax element without link", ->
+    it "returns false for preSubmit when loader is running", ->
+        loader = new App.AjaxLoader.Default
+        ajaxElement = new App.AjaxElement.Default 'a#xoo', loader
+
+        spyOn(loader, 'isRunning').andReturn true
+
+        expect(ajaxElement.preSubmit()).toEqual(false)
 
 
 describe "element errorizer", ->

@@ -48,6 +48,13 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
             return false
         )
 
+    # Called after link has been clicked and before the request is sent.
+    preSubmit: ($element) ->
+        if @loader.isRunning()
+            return false
+
+        @loader.start()
+
 # Default ajax element implementation.
 class App.AjaxElement.Default extends App.AjaxElement.Abstract
 

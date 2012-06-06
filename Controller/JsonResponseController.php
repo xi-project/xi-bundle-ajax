@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController,
 /**
  * Extends Symfony controller with JSON success and failure functionality.
  *
- * @author Mikko Hirvonen <mikko.hirvonen@soprano.fi>
+ * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  * @author Henri Vesala <henri.vesala@gmail.com>
  */
 class JsonResponseController extends BaseController

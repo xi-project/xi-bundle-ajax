@@ -7,6 +7,27 @@ you have problems in your backend it manages to fail gracefully with notificatio
 
 
 
+## Installing
+
+### deps -file
+```
+[XiAjaxBundle]
+    git=http://github.com/xi-project/xi-bundle-ajax.git
+    target=/bundles/Xi/Bundle/AjaxBundle
+```
+
+### autoload.php file
+```php
+<?php
+'Xi\\Bundle'       => __DIR__.'/../vendor/bundles',
+?>
+```
+### appKernel.php -file
+```php
+<?php
+            new Xi\Bundle\AjaxBundle\XiAjaxBundle(),
+ ?>
+```   
 
 ##  AjaxAbstractLogic
 This is the base class for ajax logics. You won't use this directly.
@@ -28,7 +49,7 @@ The template includes AjaxForm functionality that helps you to make ajax functio
 
 namespace My\ProjectBundle\Controller;
 
-use SBA\GenericBundle\Controller\JsonResponseController;
+use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 
 class MyController extends JsonResponseController
 {
@@ -60,7 +81,7 @@ Messages stays in place until you submit that form again unless you manualy defi
 The template also includes AjaxElement functionality that helps you to bind ajax functionality to any element.
 Of course you would mostlikely use it in anchors. 
 
-1.  Make sure that you initialize AjaxElement in your CoffeeScript file: `new App.AjaxElement.Default '.ajax-element'`
+1.  Make sure that you initialize AjaxElement in your CoffeeScript file: `new App.AjaxElement.Default '.ajax-link'`
     - The first argument is required. It specifies the elements you would like to ajaxify.
 2.  Make a form with class named after your identifier: `<a class="ajax-form" href="your action"... >`
 3.  You can make your own instances of AjaxElement. Just extend the abstract base class.
@@ -72,7 +93,7 @@ Of course you would mostlikely use it in anchors.
 
 namespace My\ProjectBundle\Controller;
 
-use SBA\GenericBundle\Controller\JsonResponseController;
+use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 
 class MyController extends JsonResponseController
 {
