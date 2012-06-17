@@ -306,6 +306,28 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function formGeneralErrors()
+    {
+        $form = $this->createUserForm();
+        $form->addError(new FormError('foo'))
+             ->addError(new FormError('bar'));
+
+        $this->assertEquals(
+            array(
+                'my_form' => array(
+                    'errors' => array(
+                        'translated foo',
+                        'translated bar',
+                    ),
+                ),
+            ),
+            $this->controller->getFormErrorsForJson($form)
+        );
+    }
+
+    /**
      * @return Form
      */
     private function createUserForm()
