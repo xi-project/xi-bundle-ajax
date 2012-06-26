@@ -1,0 +1,7 @@
+{
+    "require": {
+        "symfony/framework-bundle": "=v2.1.0-BETA1",
+        "symfony/form": "=v2.1.0-BETA1",
+        "symfony/dependency-injection": "=v2.1.0-BETA1"
+    }
+}
