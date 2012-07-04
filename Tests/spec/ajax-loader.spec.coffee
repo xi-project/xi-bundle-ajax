@@ -14,6 +14,7 @@ describe "ajax-loader", ->
 
     it "starts the loader", ->
         expect(loader).toBeDefined()
+        loader.stop()
         loader.start()
         expect(container.find('#ajax-loader').length).toBeGreaterThan(0)
         loader.stop()

@@ -11,7 +11,8 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
         if !errorizers
             @errorizers  = [new App.ElementErrorizer.Default()].concat(@errorizers)
 
-        @bind(@getConfiguration())
+        @currentConfig = @getConfiguration()
+        @bind(@currentConfig)
 
     # get configuration and mix some defaults to them
     getConfiguration: =>
@@ -22,11 +23,12 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
             cache:              false
             event:              "click"          
         }
-        $.extend(super(), options)
+        $.extend(super(@), options)
 
     #Binds rules to your selector
     bind: (options) =>
         self = this
+
         $(@selector).live(options.event, () ->
             $.ajax({                   
                 url         :   $(this).attr('href')

@@ -71,28 +71,33 @@ class App.AjaxAbstractLogic
             @loader = new App.AjaxLoader.Default()
 
     # Get ajax configuration object.
-    getConfiguration: =>
+    # @param that The object used as scope to use for the functions
+    getConfiguration: (that) =>
+
+        unless that
+            that = @
+
         return {
             # Success callback
             success: (response, statusText, xhr, @element) =>
-                @preHandleResponse @element
-                response = @validateAndParseJsonResponse(response)
+                that.preHandleResponse @element
+                response = that.validateAndParseJsonResponse(response)
 
                 if response && response.success
-                    @handleSuccess response.success
+                    that.handleSuccess response.success
                     return true
                 else if response
-                    @handleFailure response, @element
+                    that.handleFailure response, @element
                 false
 
             error: (xhr, ajaxOptions, thrownError) =>
-                @preHandleResponse @currentElement  #we use stored currentElement because failure does not return it
-                @handleFailure { 'error': {'xhr': xhr, 'ajaxOptions': ajaxOptions, 'thrownError': thrownError} }, @currentElement
+                that.preHandleResponse that.currentElement  #we use stored currentElement because failure does not return it
+                that.handleFailure { 'error': {'xhr': xhr, 'ajaxOptions': ajaxOptions, 'thrownError': thrownError} }, that.currentElement
 
             # Before submit callback
             beforeSubmit: (data, $element, options) =>
-                @currentElement = $element   # this line is mandatory! We need store current element, so it can be used if response is failure
-                @preSubmit $element
+                that.currentElement = $element   # this line is mandatory! We need store current element, so it can be used if response is failure
+                that.preSubmit $element
         }
 
     # validates json response and try to parse it if able
@@ -110,9 +115,11 @@ class App.AjaxAbstractLogic
                 @handleFailure(response, @element)
             else if !parsedResponse.success && !parsedResponse.failure              # "Unknown json response received."
                 @handleFailure(parsedResponse, @element)
-   
+
             return parsedResponse
+
         return response
+
     # Called after success response has been received.
     handleSuccess: (success) ->
         if success.redirect
