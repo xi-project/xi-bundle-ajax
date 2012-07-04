@@ -1,13 +1,14 @@
 {
     "name": "xi/ajax-bundle",
-    "description": "Xi Ajax Bundle for ajax request processing",
-    "keywords": ["ajax"],
+    "description": "Xi Ajax Bundle for basic ajax functionality with forms and elements. Includes customizable loading animations and error handler stack",
+    "keywords": ["ajax", "json"],
     "type": "symfony-bundle",
     "authors": [
         {
             "name": "xi-project",
             "email": "xi.devs@gmail.com"
         }
+
     ],
     "require": {
         "symfony/framework-bundle": "=v2.1.0-BETA1",
