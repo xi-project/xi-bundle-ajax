@@ -8,8 +8,8 @@
             "name": "xi-project",
             "email": "xi.devs@gmail.com"
         }
-
     ],
+    "minimum-stability": "dev",
     "require": {
         "symfony/framework-bundle": "=v2.1.0-BETA1",
         "symfony/form": "=v2.1.0-BETA1",
