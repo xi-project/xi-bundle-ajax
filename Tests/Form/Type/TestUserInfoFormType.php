@@ -3,7 +3,8 @@
 namespace Xi\Bundle\AjaxBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\AbstractType,
-    Symfony\Component\Form\FormBuilder;
+    Symfony\Component\Form\FormBuilderInterface,
+    Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
@@ -14,7 +15,7 @@ class TestUserInfoFormType extends AbstractType
      * @param FormBuilder $builder
      * @param array $options
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('address');
     }
@@ -28,13 +29,13 @@ class TestUserInfoFormType extends AbstractType
     }
 
     /**
-     * @param array $options
+     * @param OptionsResolverInterface $resolver
      * @return array
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class' => 'Xi\Bundle\AjaxBundle\Tests\Model\TestUserInfo',
-        );
+        ));
     }
 }
