@@ -15,6 +15,7 @@ use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 use Xi\Bundle\AjaxBundle\Tests\Model\TestUser;
 use Xi\Bundle\AjaxBundle\Tests\Form\Type\TestUserInfoFormType;
 use Symfony\Component\Form\FormRegistry;
+use Symfony\Component\Form\ResolvedFormTypeFactory;
 
 /**
  * @author Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
@@ -356,10 +357,11 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
     {
         $formType = new FormType();
         $resolvedType = new ResolvedFormType($formType);
+        $resolvedTypeFactory = new ResolvedFormTypeFactory($formType, array(new CoreExtension()));
 
-        $registry = new FormRegistry(array(new CoreExtension()));
+        $registry = new FormRegistry(array(new CoreExtension()), $resolvedTypeFactory);
         $registry->addType($resolvedType);
-        $factory = new FormFactory($registry);
+        $factory = new FormFactory($registry, $resolvedTypeFactory);
 
         return $factory->createNamedBuilder('my_form', $resolvedType, new TestUser());
     }
