@@ -80,6 +80,7 @@ class App.AjaxAbstractLogic
         return {
             # Success callback
             success: (response, statusText, xhr, @element) =>
+                that.element = @element # restore element property, avoid BC break
                 that.preHandleResponse @element
                 response = that.validateAndParseJsonResponse(response)
 
