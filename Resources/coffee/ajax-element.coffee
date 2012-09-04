@@ -23,6 +23,7 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
             cache:              false
             event:              "click"          
         }
+        # pass the scope of this object to the constructor, to properly bind the functions
         $.extend(super(@), options)
 
     #Binds rules to your selector
