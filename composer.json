@@ -8,11 +8,12 @@
             "name": "xi-project",
             "email": "xi.devs@gmail.com"
         }
-    ],    
+    ],
+    "minimum-stability": "dev",
     "require": {
-        "symfony/framework-bundle": "=v2.0.14",
-        "symfony/form": "=v2.0.14",
-        "symfony/dependency-injection": "=v2.0.14"
+        "symfony/framework-bundle": "2.1.*",
+        "symfony/form": "2.1.*",
+        "symfony/dependency-injection": "2.1.*"
     },
     "autoload": {
         "psr-0": {
