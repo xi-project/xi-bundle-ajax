@@ -19,17 +19,17 @@ describe "ajax-element", ->
     it "instantiates", ->
         expect(ajaxElement).toBeDefined()
 
-    # some kind of a scope problem
-    xit "launches on default event(s) and does proper pre handling", ->
+    it "launches on default event(s) and does proper pre handling", ->
 
-        ajaxElemConfig = ajaxElement.getConfiguration()
+        ajaxElemConfig = ajaxElement.currentConfig
+        # ajaxElemConfig = ajaxElement.getConfiguration()
 
         spyOn($, "ajax").andCallFake (params) ->
             params.beforeSend {}, element, {}
-            params.success {success:{id: 1, value: "dingdong"}}
+            params.success '{"success":{"id": 1, "value": "dingdong"}}'
 
-        spyOn ajaxElemConfig, "beforeSubmit"
-        spyOn ajaxElemConfig, "success"
+        spyOn(ajaxElemConfig, "beforeSubmit").andCallThrough()
+        spyOn(ajaxElemConfig, "success").andCallThrough()
         spyOn ajaxElement, "preHandleResponse"
         spyOn ajaxElement, "handleSuccess"
 
@@ -124,5 +124,4 @@ describe "element errorizer", ->
         waits 3000
         
         runs ->
-            console.log $('.errorized-element')
             expect($('.errorized-element').length).toEqual 0

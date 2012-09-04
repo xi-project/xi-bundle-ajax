@@ -15,7 +15,7 @@ class App.AjaxForm.Abstract extends App.AjaxAbstractLogic
         @bindSubmitClickHandler()
 
     getConfiguration: =>
-        config = super()
+        config = super(@)
         config.delegation = true    # support for dynamicaly loaded forms
         return config
 
