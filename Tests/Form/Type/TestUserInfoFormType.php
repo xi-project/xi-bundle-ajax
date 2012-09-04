@@ -12,7 +12,7 @@ use Symfony\Component\Form\AbstractType,
 class TestUserInfoFormType extends AbstractType
 {
     /**
-     * @param FormBuilder $builder
+     * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
