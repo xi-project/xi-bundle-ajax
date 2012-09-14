@@ -54,7 +54,7 @@ You can ofcourse extend this if you want to do your own custom ajax logic
 
 The template includes AjaxForm functionality that helps you to make ajax functionality to your forms.
 
-1.  Install [jQuery.form](http://www.malsup.com/jquery/form) as AjaxForm uses this as its base.
+1.  Install [jQuery.form](http://www.malsup.com/jquery/form) as AjaxForm uses this.
 2.  Make sure that you initialize AjaxForm in your CoffeeScript file: `new App.AjaxForm.Default '.ajax-form'`
     - The first argument is required. It specifies the forms you would like to ajaxify.
 3.  Make a form with class named after your identifier: `<form class="ajax-form" ... >`
