@@ -90,7 +90,7 @@ class JsonResponseController extends BaseController
         $errors = array();
         $translator = $this->get('translator');
         
-        if ($form->hasErrors()) {
+        if (count($form->getErrors())) {
             foreach ($form->getErrors() as $error) {
                 $errors[$form->getName()]['errors'][] = $translator->trans(
                     $error->getMessageTemplate(), 
@@ -99,9 +99,9 @@ class JsonResponseController extends BaseController
             }
         }
 
-        if ($form->hasChildren()) {
-            foreach ($form->getChildren() as $child) {
-                if ($child->hasChildren()) {
+        if ($form->count()) {
+            foreach ($form->all() as $child) {
+                if ($child->count()) {
                     if ($childErrors = $this->getFormErrorsForJson($child)) {
                         $errors[$form->getName()]['childErrors'] = array_merge_recursive(
                             isset($errors[$form->getName()]['childErrors'])
@@ -110,7 +110,7 @@ class JsonResponseController extends BaseController
                             $childErrors
                         );
                     }
-                } else if ($child->hasErrors()) {
+                } else if (count($child->getErrors())) {
                     $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(function($error) use ($translator) {
                         return $translator->trans($error->getMessageTemplate(), $error->getMessageParameters());
                     }, $child->getErrors());
@@ -145,7 +145,7 @@ class JsonResponseController extends BaseController
     protected function processForm(Form $form, $successCallback,
         $failureCallback = null)
     {
-        if($form->bindRequest($this->getRequest())->isValid()) {
+        if($form->bind($this->getRequest())->isValid()) {
             return $successCallback($form);
         }
 
