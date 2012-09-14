@@ -61,6 +61,8 @@ The template includes AjaxForm functionality that helps you to make ajax functio
 4.  You can make your own instances of AjaxForm. Just extend the abstract base class.
     `class YourNamespace.AjaxForm.YourName extends App.AjaxForm.Abstract`
 5.  Implement backend logic for form submitting.
+6.  You can change the action of the form if submit button has a data-action parameter so you can have
+    several ways to submit the form that have different actions
 
 ```php
 <?php
