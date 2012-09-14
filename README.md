@@ -9,19 +9,13 @@ you have problems in your backend it manages to fail gracefully with notificatio
 
 ## Installing
 
-### deps -file
-```
-[XiAjaxBundle]
-    git=http://github.com/xi-project/xi-bundle-ajax.git
-    target=/bundles/Xi/Bundle/AjaxBundle
-```
+### composer.json
+```javascript
+    "require": {
+    ...
+    "xi/ajax-bundle": "2.1.x-dev"
+```     
 
-### autoload.php file
-```php
-<?php
-'Xi\\Bundle'       => __DIR__.'/../vendor/bundles',
-?>
-```
 ### appKernel.php -file
 ```php
 <?php
