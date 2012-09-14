@@ -5,7 +5,9 @@ You can use it in your forms and any other elements that you wish to bind to sen
 It also gives use a good indication what's going on by customizable loading indicator and if
 you have problems in your backend it manages to fail gracefully with notification to user.
 
-
+## Requirements:
+1. [jQuery](http://jquery.com) 
+2. [jQuery.form](http://www.malsup.com/jquery/form) 
 
 ## Installing
 
@@ -23,6 +25,27 @@ you have problems in your backend it manages to fail gracefully with notificatio
  ?>
 ```   
 
+### base.html.twig -example
+Here is an example how you could load your javascript files using assets.
+Because ajax functionalities are in differend files you can deside yoursel which components you wish to load.
+
+```html
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        
+        {% javascripts filter="?yui_js" output="js/main.js"
+            '@YourOwnBundle/Resources/js/jquery.form.js'
+            '@XiAjaxBundle/Resources/coffee/ajax-abstract-logic.coffee'
+            '@XiAjaxBundle/Resources/coffee/ajax-loader.coffee'
+            '@XiAjaxBundle/Resources/coffee/ajax-form.coffee'
+            '@XiAjaxBundle/Resources/coffee/ajax-element.coffee'
+            '@YourOwnBundle/Resources/coffee/main.coffee'
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+```         
+
+
+
 ##  AjaxAbstractLogic
 This is the base class for ajax logics. You won't use this directly.
 You can ofcourse extend this if you want to do your own custom ajax logic
@@ -31,12 +54,13 @@ You can ofcourse extend this if you want to do your own custom ajax logic
 
 The template includes AjaxForm functionality that helps you to make ajax functionality to your forms.
 
-1.  Make sure that you initialize AjaxForm in your CoffeeScript file: `new App.AjaxForm.Default '.ajax-form'`
+1.  Install [jQuery.form](http://www.malsup.com/jquery/form) as AjaxForm uses this as its base.
+2.  Make sure that you initialize AjaxForm in your CoffeeScript file: `new App.AjaxForm.Default '.ajax-form'`
     - The first argument is required. It specifies the forms you would like to ajaxify.
-2.  Make a form with class named after your identifier: `<form class="ajax-form" ... >`
-3.  You can make your own instances of AjaxForm. Just extend the abstract base class.
+3.  Make a form with class named after your identifier: `<form class="ajax-form" ... >`
+4.  You can make your own instances of AjaxForm. Just extend the abstract base class.
     `class YourNamespace.AjaxForm.YourName extends App.AjaxForm.Abstract`
-4.  Implement backend logic for form submitting.
+5.  Implement backend logic for form submitting.
 
 ```php
 <?php
