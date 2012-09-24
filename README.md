@@ -13,42 +13,45 @@ you have problems in your backend it manages to fail gracefully with notificatio
 
 ### composer.json
 ```javascript
-    "require": {
+"require": {
     ...
     "xi/ajax-bundle": "2.1.x-dev"
+}
 ```     
 
-### appKernel.php -file
+### AppKernel.php
 ```php
 <?php
-            new Xi\Bundle\AjaxBundle\XiAjaxBundle(),
- ?>
+
+$bundles = array(
+    ...
+    new Xi\Bundle\AjaxBundle\XiAjaxBundle(),
+);
 ```   
 
 ### base.html.twig -example
-Here is an example how you could load your javascript files using assets.
-Because ajax functionalities are in differend files you can deside yoursel which components you wish to load.
+Here is an example how you could load your JavaScript files using assets.
+Because ajax functionalities are in different files you can deside yourself which components you wish to load.
 
 ```html
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        
-        {% javascripts filter="?yui_js" output="js/main.js"
-            '@YourOwnBundle/Resources/js/jquery.form.js'
-            '@XiAjaxBundle/Resources/coffee/ajax-abstract-logic.coffee'
-            '@XiAjaxBundle/Resources/coffee/ajax-loader.coffee'
-            '@XiAjaxBundle/Resources/coffee/ajax-form.coffee'
-            '@XiAjaxBundle/Resources/coffee/ajax-element.coffee'
-            '@YourOwnBundle/Resources/coffee/main.coffee'
-        %}
-        <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-```         
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
+{% javascripts filter="?yui_js" output="js/main.js"
+    '@YourOwnBundle/Resources/js/jquery.form.js'
+    '@XiAjaxBundle/Resources/coffee/ajax-abstract-logic.coffee'
+    '@XiAjaxBundle/Resources/coffee/ajax-loader.coffee'
+    '@XiAjaxBundle/Resources/coffee/ajax-form.coffee'
+    '@XiAjaxBundle/Resources/coffee/ajax-element.coffee'
+    '@YourOwnBundle/Resources/coffee/main.coffee'
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```
 
 
 ##  AjaxAbstractLogic
 This is the base class for ajax logics. You won't use this directly.
-You can ofcourse extend this if you want to do your own custom ajax logic
+You can of course extend this if you want to do your own custom ajax logic.
 
 ## AjaxForm
 
@@ -77,7 +80,7 @@ class MyController extends JsonResponseController
     {
         $form = ...
 
-        if ($form->bindRequest($this->getRequest())->isValid()) {
+        if ($form->bind($this->getRequest())->isValid()) {
             // Form is valid. Do something.
 
             // Redirects automatically to given route.
@@ -117,26 +120,24 @@ use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 
 class MyController extends JsonResponseController
 {
-    // you most likely want to pass some parameter to action
-    public function someAction($some_parameter)
+    public function someAction($someParameter)
     {
-        // if parameter is what you want
-        if ($some_parameter) {
-            // let do something: example reload the page
+        if ($someParameter) {
+            // Do something. For example reload the page.
             return $this->createJsonSuccessReloadResponse();
         } else {
-            // lets send a message that parameter is invalid
-            return $this->createJsonFailureResponse('some parameter was false...');
-        }   
+            // Parameter was invalid.
+            return $this->createJsonFailureResponse('Some parameter was false...');
+        }
     }
 }
 ```
 
 ### App.ElementErrorizer.Default
 This is the default Element errorizer. It just creates a box with message next to your activated ajax element.
-Message stays for 2 seconds and then dissapears.
+Message stays for 2 seconds and then disappears.
 
-Be adviced that you need some styles to for box to show up:
+Be adviced that you need some styles to for the box to show up:
 
 ```css
 .errorized-element {
@@ -158,19 +159,18 @@ Be adviced that you need some styles to for box to show up:
     position:           absolute;
     display:            block;
 }
-
 ```
 
-## Backend logics for ajax functions
+## Backend logic for ajax functions
 
 ### Json Success Response
-Just tells that everyting went well and our script may remove the loading animation
-No real feedback is given user
+Just tells that everyting went well and our script may remove the loading animation.
+No real feedback is given user.
 
 ```php
 <?php
-    createJsonSuccessResponse('your response text')
-?>
+
+$this->createJsonSuccessResponse('your response text')
 ```
 
 ### Json Success Redirect Response
@@ -178,8 +178,8 @@ Simple redirect request for javascript. Very usable in your backend save actions
 
 ```php
 <?php
-    createJsonSuccessRedirectResponse('your_route_name', array('some_id' => 1))
-?>
+
+$this->createJsonSuccessRedirectResponse('your_route_name', array('some_id' => 1))
 ```
 
 ### Json Success Reload Response
@@ -188,18 +188,18 @@ in different context you may not want some fixed route to be redirected. Instead
 
 ```php
 <?php
-    createJsonSuccessReloadResponse()
-?>
+
+$this->createJsonSuccessReloadResponse()
 ```
 
 ### Json Failure Response
 Something went wrong. But we are trying to recover from it. Message is passed to errorhandlers and its up to them how
-error is presented to user.
+the error is presented to user.
 
 ```php
 <?php
-    createJsonFailureResponse('something went wrong...')
-?>
+
+$this->createJsonFailureResponse('something went wrong...')
 ```
 
 ### Json Form Failure Response
@@ -207,8 +207,8 @@ When form is invalid you wish to inform user about it. This function sends form 
 
 ```php
 <?php
-    createJsonFormFailureResponse(Form $form)
-?>
+
+createJsonFormFailureResponse(Form $form)
 ```
 
 ### Json success with content
@@ -223,6 +223,7 @@ Example:
 
 ```php
 <?php
+
 public function returnCallbackAction() 
 {
     return $this->createJsonSuccessWithContent(
@@ -230,7 +231,6 @@ public function returnCallbackAction()
         'yourOwnCallback'
     );
 }
-?>
 ```
 
 In javascript side you must extend your own presentation of ajaxform and add
@@ -239,9 +239,7 @@ file you rendered in your controller.
 The following example is written in Coffeescript.
 
 ```coffeescript
-
 class App.AjaxForm.Customized extends App.AjaxForm.Default
     yourOwnCallback: (content) ->
         $('#your-container').html(content)
-
 ```
