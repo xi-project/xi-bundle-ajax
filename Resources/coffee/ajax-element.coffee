@@ -30,7 +30,7 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
     bind: (options) =>
         self = this
 
-        $(@selector).on(options.event, () ->
+        $('body').on(options.event, @selector, () ->
             $.ajax({
                 url         :   $(this).attr('href')
                 type        :   options.type
