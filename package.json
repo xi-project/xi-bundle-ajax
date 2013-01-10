@@ -1,0 +1,13 @@
+{
+  "name": "xi-ajax-bundle",
+  "version": "0.2.1",
+  "engines": { "node": ">= 0.8" },
+  "dependencies":{
+    "coffee-script": ">= 1.4.0"
+  },
+  "devDependencies": {
+    "jasmine-node" : "*",
+    "jquery": ">= 1.8",
+    "jsdom" : "*"
+  }
+}
