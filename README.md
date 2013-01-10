@@ -243,3 +243,14 @@ class App.AjaxForm.Customized extends App.AjaxForm.Default
     yourOwnCallback: (content) ->
         $('#your-container').html(content)
 ```
+
+### Development & testing
+
+Install required test libraries with
+```
+npm install .
+```
+Run tests
+```
+cd Tests && ./run.sh
+``
