@@ -4,3 +4,8 @@ nbproject
 /Tests/composer.lock
 /Tests/phpunit.xml
 /Tests/node_modules
+npm-debug.log
+/vendor
+/node_modules
+composer.phar
+composer.lock

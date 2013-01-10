@@ -1,6 +1,6 @@
 App.AjaxElement = {}
 # Abstract ajax element. Should not be instantiated.
-# Be adviced that you must create your own callback methods in your own 
+# Be adviced that you must create your own callback methods in your own
 # implementation if you are about to use callbackMethod functionality.
 class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
 
@@ -21,7 +21,7 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
             dataType:           "html"
             async:              true
             cache:              false
-            event:              "click"          
+            event:              "click"
         }
         # pass the scope of this object to the constructor, to properly bind the functions
         $.extend(super(@), options)
@@ -30,19 +30,19 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
     bind: (options) =>
         self = this
 
-        $(@selector).live(options.event, () ->
-            $.ajax({                   
+        $(@selector).on(options.event, () ->
+            $.ajax({
                 url         :   $(this).attr('href')
                 type        :   options.type
                 async       :   options.async
                 cache       :   options.cache
                 dataType    :   options.dataType
                 success     :   (data, textStatus, jqXHR) =>
-                    try  
-                        options.success($.parseJSON(data), textStatus, jqXHR, $(this)) 
+                    try
+                        options.success($.parseJSON(data), textStatus, jqXHR, $(this))
                     catch error                                                         # "Not parseable JSON response."
                         self.handleFailure(data, $(this))
-               
+
                 beforeSend  :   (jqXHR, settings) =>
                     options.beforeSubmit(jqXHR, $(this), settings)
                 error       :   options.error
