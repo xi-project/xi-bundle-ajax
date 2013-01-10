@@ -253,4 +253,4 @@ npm install .
 Run tests
 ```
 cd Tests && ./run.sh
-``
+```
