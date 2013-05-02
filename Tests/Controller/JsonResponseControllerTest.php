@@ -356,13 +356,11 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
     private function createNamedFormBuilder()
     {
         $formType = new FormType();
-        $resolvedType = new ResolvedFormType($formType);
         $resolvedTypeFactory = new ResolvedFormTypeFactory($formType, array(new CoreExtension()));
 
         $registry = new FormRegistry(array(new CoreExtension()), $resolvedTypeFactory);
-        $registry->addType($resolvedType);
         $factory = new FormFactory($registry, $resolvedTypeFactory);
 
-        return $factory->createNamedBuilder('my_form', $resolvedType, new TestUser());
+        return $factory->createNamedBuilder('my_form', $formType, new TestUser());
     }
 }

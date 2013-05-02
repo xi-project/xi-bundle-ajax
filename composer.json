@@ -11,9 +11,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "symfony/framework-bundle": "2.1.*",
-        "symfony/form": "2.1.*",
-        "symfony/dependency-injection": "2.1.*"
+        "symfony/framework-bundle": "2.2.*",
+        "symfony/form": "2.2.*",
+        "symfony/dependency-injection": "2.2.*"
     },
     "autoload": {
         "psr-0": {

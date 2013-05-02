@@ -5,13 +5,11 @@ php:
   - 5.4
 
 node_js:
-  - 0.6
+  - 0.8
 
 before_script:
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
-  - nvm install v0.6.17
-  - nvm use v0.6.17
   - npm install jasmine-node jsdom jquery
   - cd Tests
 
