@@ -94,7 +94,8 @@ class JsonResponseController extends BaseController
             foreach ($form->getErrors() as $error) {
                 $errors[$form->getName()]['errors'][] = $translator->trans(
                     $error->getMessageTemplate(), 
-                    $error->getMessageParameters()
+                    $error->getMessageParameters(), 
+                    'validators'
                 );
             }
         }
@@ -112,7 +113,11 @@ class JsonResponseController extends BaseController
                     }
                 } else if (count($child->getErrors())) {
                     $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(function($error) use ($translator) {
-                        return $translator->trans($error->getMessageTemplate(), $error->getMessageParameters());
+                        return $translator->trans(
+                            $error->getMessageTemplate(), 
+                            $error->getMessageParameters(),
+                            'validators'
+                        );
                     }, $child->getErrors());
                 }
             }
