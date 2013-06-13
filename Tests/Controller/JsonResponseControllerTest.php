@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\ResolvedFormType;
 use Xi\Bundle\AjaxBundle\Controller\JsonResponseController;
 use Xi\Bundle\AjaxBundle\Tests\Model\TestUser;
@@ -356,13 +357,10 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
     private function createNamedFormBuilder()
     {
         $formType = new FormType();
-        $resolvedType = new ResolvedFormType($formType);
-        $resolvedTypeFactory = new ResolvedFormTypeFactory($formType, array(new CoreExtension()));
 
-        $registry = new FormRegistry(array(new CoreExtension()), $resolvedTypeFactory);
-        $registry->addType($resolvedType);
-        $factory = new FormFactory($registry, $resolvedTypeFactory);
-
-        return $factory->createNamedBuilder('my_form', $resolvedType, new TestUser());
+        $factory = Forms::createFormFactoryBuilder()
+            ->addType($formType)
+            ->getFormFactory();
+        return $factory->createNamedBuilder('my_form', $formType, new TestUser());
     }
 }
