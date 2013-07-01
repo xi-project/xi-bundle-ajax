@@ -15,7 +15,7 @@ you have problems in your backend it manages to fail gracefully with notificatio
 ```javascript
 "require": {
     ...
-    "xi/ajax-bundle": "2.2.x-dev"
+    "xi/ajax-bundle": "2.3.x-dev"
 }
 ```     
 
