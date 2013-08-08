@@ -96,7 +96,7 @@ class JsonResponseController extends BaseController
                 $errors[$form->getName()]['errors'][] = $translator->trans(
                     $error->getMessageTemplate(), 
                     $error->getMessageParameters(),
-                    $this->getTranslatorValidationDomain()
+                    $this->getValidationTranslationDomain()
                 );
             }
         }
@@ -117,7 +117,7 @@ class JsonResponseController extends BaseController
                         return $translator->trans(
                             $error->getMessageTemplate(), 
                             $error->getMessageParameters(),
-                            $this->getTranslatorValidationDomain()
+                            $this->getValidationTranslationDomain()
                         );
                     }, $child->getErrors());
                 }
@@ -168,8 +168,12 @@ class JsonResponseController extends BaseController
     /**
      * @return string
      */
-    private function getTranslatorValidationDomain()
+    private function getValidationTranslationDomain()
     {
+        if ($this->container->hasParameter('framework.validation.translation_domain')) {
+            return $this->container->getParameter('framework.validation.translation_domain');
+        }
+
         return 'validators';
     }
 }
