@@ -339,7 +339,7 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
         $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())
             ->method('trans')
-            ->with('foo', [], 'validators');
+            ->with('foo', array(), 'validators');
 
         $this->container->set('translator', $translator);
 
@@ -359,7 +359,7 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
         $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())
             ->method('trans')
-            ->with('foo', [], 'new_domain');
+            ->with('foo', array(), 'new_domain');
 
         $this->container->set('translator', $translator);
 
