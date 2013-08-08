@@ -113,13 +113,16 @@ class JsonResponseController extends BaseController
                         );
                     }
                 } else if (count($child->getErrors())) {
-                    $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(function($error) use ($translator) {
-                        return $translator->trans(
-                            $error->getMessageTemplate(), 
-                            $error->getMessageParameters(),
-                            $this->getValidationTranslationDomain()
-                        );
-                    }, $child->getErrors());
+                    $self = $this;
+                    $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(
+                        function($error) use ($translator, $self) {
+                            return $translator->trans(
+                                $error->getMessageTemplate(),
+                                $error->getMessageParameters(),
+                                $self->getValidationTranslationDomain()
+                            );
+                        }, $child->getErrors()
+                    );
                 }
             }
         }
