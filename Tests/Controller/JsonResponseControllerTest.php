@@ -332,6 +332,44 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function translatorUsesDefaultValidationDomain()
+    {
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator->expects($this->any())
+            ->method('trans')
+            ->with('foo', array(), 'validators');
+
+        $this->container->set('translator', $translator);
+
+        $form = $this->createUserForm();
+        $form->addError(new FormError('foo'));
+
+        $this->controller->getFormErrorsForJson($form);
+    }
+
+    /**
+     * @test
+     */
+    public function translatorUsesValidationDomainFromConfigIfExists()
+    {
+        $this->container->setParameter('framework.validation.translation_domain', 'new_domain');
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator->expects($this->any())
+            ->method('trans')
+            ->with('foo', array(), 'new_domain');
+
+        $this->container->set('translator', $translator);
+
+        $form = $this->createUserForm();
+        $form->addError(new FormError('foo'));
+
+        $this->controller->getFormErrorsForJson($form);
+    }
+
+    /**
      * @return Form
      */
     private function createUserForm()

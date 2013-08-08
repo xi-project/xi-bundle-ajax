@@ -2,9 +2,9 @@
 
 namespace Xi\Bundle\AjaxBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController,
-    Symfony\Component\Form\Form,
-    Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Extends Symfony controller with JSON success and failure functionality.
@@ -28,7 +28,8 @@ class JsonResponseController extends BaseController
      * @param array $options  (key value pairs for route parameters)
      * @return array
      */
-    public function createJsonSuccessRedirectResponse($route,
+    public function createJsonSuccessRedirectResponse(
+        $route,
         array $options = array()
     ) {
         return $this->createJsonSuccessResponse(array(
@@ -94,8 +95,8 @@ class JsonResponseController extends BaseController
             foreach ($form->getErrors() as $error) {
                 $errors[$form->getName()]['errors'][] = $translator->trans(
                     $error->getMessageTemplate(), 
-                    $error->getMessageParameters(), 
-                    'validators'
+                    $error->getMessageParameters(),
+                    $this->getValidationTranslationDomain()
                 );
             }
         }
@@ -112,18 +113,48 @@ class JsonResponseController extends BaseController
                         );
                     }
                 } else if (count($child->getErrors())) {
-                    $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(function($error) use ($translator) {
-                        return $translator->trans(
-                            $error->getMessageTemplate(), 
-                            $error->getMessageParameters(),
-                            'validators'
-                        );
-                    }, $child->getErrors());
+                    $translationDomain = $this->getValidationTranslationDomain();
+
+                    $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(
+                        function($error) use ($translator, $translationDomain) {
+                            return $translator->trans(
+                                $error->getMessageTemplate(),
+                                $error->getMessageParameters(),
+                                $translationDomain
+                            );
+                        }, $child->getErrors()
+                    );
                 }
             }
         }
 
         return $errors;
+    }
+
+    /**
+     * Processes a form and executes and returns the result of either success or
+     * failure callback.
+     *
+     * @param  Form     $form
+     * @param  callback $successCallback
+     * @param  callback $failureCallback
+     * @return mixed
+     */
+    protected function processForm(
+        Form $form,
+        $successCallback,
+        $failureCallback = null
+    ) {
+        if ($form->bind($this->getRequest())->isValid()) {
+            return $successCallback($form);
+        }
+
+        $self = $this;
+        $failureCallback = $failureCallback ?: function($form) use ($self) {
+            return $self->createJsonFormFailureResponse($form);
+        };
+
+        return $failureCallback($form);
     }
 
     /**
@@ -137,29 +168,16 @@ class JsonResponseController extends BaseController
             $what => $response === null ? true : $response,
         ));
     }
-    
+
     /**
-     * Processes a form and executes and returns the result of either success or
-     * failure callback.
-     *
-     * @param  Form     $form
-     * @param  callback $successCallback
-     * @param  callback $failureCallback
-     * @return mixed
+     * @return string
      */
-    protected function processForm(Form $form, $successCallback,
-        $failureCallback = null)
+    private function getValidationTranslationDomain()
     {
-        if($form->bind($this->getRequest())->isValid()) {
-            return $successCallback($form);
+        if ($this->container->hasParameter($key = 'framework.validation.translation_domain')) {
+            return $this->container->getParameter($key);
         }
 
-        $self = $this;
-        $failureCallback = $failureCallback ?: function($form) use ($self) {
-            return $self->createJsonFormFailureResponse($form);
-        };
-
-        return $failureCallback($form);
+        return 'validators';
     }
-    
 }
