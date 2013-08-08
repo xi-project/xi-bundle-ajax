@@ -170,9 +170,7 @@ class JsonResponseController extends BaseController
      */
     private function getValidationTranslationDomain()
     {
-        $key = 'framework.validation.translation_domain';
-
-        if ($this->container->hasParameter($key)) {
+        if ($this->container->hasParameter($key = 'framework.validation.translation_domain')) {
             return $this->container->getParameter($key);
         }
 
