@@ -354,7 +354,7 @@ class JsonResponseControllerTest extends PHPUnit_Framework_TestCase
      */
     public function translatorUsesValidationDomainFromConfigIfExists()
     {
-        $this->container->setParameter('framework.validation.translation_domain', 'new_domain');
+        $this->container->setParameter('validator.translation_domain', 'new_domain');
 
         $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())
