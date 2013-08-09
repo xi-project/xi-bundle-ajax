@@ -96,7 +96,7 @@ class JsonResponseController extends BaseController
                 $errors[$form->getName()]['errors'][] = $translator->trans(
                     $error->getMessageTemplate(), 
                     $error->getMessageParameters(),
-                    $this->getValidationTranslationDomain()
+                    $this->getValidatorTranslationDomain()
                 );
             }
         }
@@ -113,7 +113,7 @@ class JsonResponseController extends BaseController
                         );
                     }
                 } else if (count($child->getErrors())) {
-                    $translationDomain = $this->getValidationTranslationDomain();
+                    $translationDomain = $this->getValidatorTranslationDomain();
 
                     $errors[$form->getName()]['childErrors'][$child->getName()] = array_map(
                         function($error) use ($translator, $translationDomain) {
@@ -172,9 +172,9 @@ class JsonResponseController extends BaseController
     /**
      * @return string
      */
-    private function getValidationTranslationDomain()
+    private function getValidatorTranslationDomain()
     {
-        if ($this->container->hasParameter($key = 'framework.validation.translation_domain')) {
+        if ($this->container->hasParameter($key = 'validator.translation_domain')) {
             return $this->container->getParameter($key);
         }
 
