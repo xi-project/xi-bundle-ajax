@@ -4,6 +4,7 @@ namespace Xi\Bundle\AjaxBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -44,11 +45,11 @@ class JsonResponseController extends BaseController
     {
         return $this->createJsonSuccessResponse(array('reload' => true));
     }
-    
+
     /**
      * Returns a response with success -status, content and callback that should
      * be called in your javascript file.
-     * 
+     *
      * @param string $content
      * @param string $callback
      * @return array
@@ -59,7 +60,7 @@ class JsonResponseController extends BaseController
             'content' => $content, 'callback' => $callback
         ));
     }
-    
+
     /**
      * @param mixed $response
      * @return array
@@ -90,11 +91,11 @@ class JsonResponseController extends BaseController
     {
         $errors = array();
         $translator = $this->get('translator');
-        
+
         if (count($form->getErrors())) {
             foreach ($form->getErrors() as $error) {
                 $errors[$form->getName()]['errors'][] = $translator->trans(
-                    $error->getMessageTemplate(), 
+                    $error->getMessageTemplate(),
                     $error->getMessageParameters(),
                     $this->getValidatorTranslationDomain()
                 );
@@ -122,7 +123,8 @@ class JsonResponseController extends BaseController
                                 $error->getMessageParameters(),
                                 $translationDomain
                             );
-                        }, $child->getErrors()
+                        },
+                        $this->formatErrors($child->getErrors())
                     );
                 }
             }
@@ -179,5 +181,19 @@ class JsonResponseController extends BaseController
         }
 
         return 'validators';
+    }
+
+    private function formatErrors($formErrors)
+    {
+        if (!$formErrors instanceof FormErrorIterator) {
+            return $formErrors;
+        }
+
+        $errors = array();
+        foreach ($formErrors as $formError) {
+            $errors[] = $formError;
+        }
+
+        return $errors;
     }
 }
