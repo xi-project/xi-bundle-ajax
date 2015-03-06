@@ -1,16 +1,16 @@
 App.AjaxForm = {}
 # Abstract ajax form. Should not be instantiated.
-# Be adviced that you must create your own callback methods in your own 
+# Be adviced that you must create your own callback methods in your own
 # implementation if you are about to use callbackMethod functionality.
 class App.AjaxForm.Abstract extends App.AjaxAbstractLogic
 
     constructor: (@selector, @loader, @errorizers) ->
         super(@selector, @loader, @errorizers)
         # if there is no initial errorizers add default form errorizer to first of errorizers
-        if !errorizers
+        if @errorizers
             @errorizers  = [new App.FormErrorizer.Default()].concat(@errorizers)
 
-        $(selector).ajaxForm(@getConfiguration())
+        $(@selector).ajaxForm(@getConfiguration())
 
         @bindSubmitClickHandler()
 
@@ -95,7 +95,7 @@ class App.FormErrorizer.Default extends App.AbstractErrorizer
     errorize: ($form, response) ->
         if response.failure && response.failure.formErrors
             formName = getFormName response.failure.formErrors
-            
+
             # General errors
             if response.failure.formErrors[formName].errors
                 @displayFormErrors $form, response.failure.formErrors[formName].errors
@@ -118,27 +118,27 @@ class App.FormErrorizer.Default extends App.AbstractErrorizer
     displayFormErrors: ($form, messages) ->
         $(messages).each (i, message) =>
             element = @getErrorElement()
-            
+
             if @formErrorPosition is 'bottom'
                 $form.append element.text(message)
             else
                 $form.prepend element.text(message)
-                
+
             if (@formErrorFadeOutTime > 0)
                 element.delay(@formErrorFadeOutTime).fadeOut();
 
     # Display an error next to a field.
-    displayFieldError: (fieldId, errors) -> 
+    displayFieldError: (fieldId, errors) ->
 
         $field = $('[name^="' + fieldId + '"]').first()
-        # grouped errors        
+        # grouped errors
         if $field.closest(".#{@errorGroupClass}").length
             $field = $field.closest(".#{@errorGroupClass}")
             $field.addClass @errorizeClass
-            $.each errors, (i, message) =>  
+            $.each errors, (i, message) =>
                 $field.after @getWrappedError(message)
 
-        else       
+        else
             $field.addClass @errorizeClass
             $.each errors, (i, message) =>
                 $field.after @getErrorElement().text message
@@ -162,15 +162,15 @@ class App.FormErrorizer.Default extends App.AbstractErrorizer
 
     # Errorizes children recursively.
     _errorizeChildren: ($form, childErrors, path) ->
-       
-        $(childErrors).each (i, child) =>           
+
+        $(childErrors).each (i, child) =>
             $.each child, (inputId, errors) =>
-                if  errors.errors 
+                if  errors.errors
                     if typeof inputId =='string'
                         @displayFieldError(resolvePath(path, inputId), errors.errors)
                     else
-                         @displayFormErrors $form, errors.errors               
-                    
+                         @displayFormErrors $form, errors.errors
+
                 if errors.childErrors
                     @_errorizeChildren $form, errors.childErrors, resolvePath(path, inputId)
 

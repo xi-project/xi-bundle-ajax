@@ -8,7 +8,7 @@ class App.AjaxElement.Abstract extends App.AjaxAbstractLogic
         super(@selector, @loader, @errorizers)
 
         # if there is no initial errorizers add default form errorizer to first of errorizers
-        if !errorizers
+        if !@errorizers
             @errorizers  = [new App.ElementErrorizer.Default()].concat(@errorizers)
 
         @currentConfig = @getConfiguration()
@@ -76,16 +76,15 @@ class App.ElementErrorizer.Default extends App.AbstractErrorizer
     errorize: ($link, response) ->
         if response.failure
             offset = $link.offset()
-            $('body').append('<div class="'+@errorizeClass+'" style="top:' + (offset.top+@offsetTop)+ 'px; left:'+(offset.left+@offsetLeft)+'px;">'+response.failure+'</div>')   
-            $("."+@errorizeClass).delay(2000).hide('slow', () => 
-                $("."+@errorizeClass).remove() 
+            $('body').append('<div class="'+@errorizeClass+'" style="top:' + (offset.top+@offsetTop)+ 'px; left:'+(offset.left+@offsetLeft)+'px;">'+response.failure+'</div>')
+            $("."+@errorizeClass).delay(2000).hide('slow', () =>
+                $("."+@errorizeClass).remove()
             )
             true
         else
             false
 
     clear: =>
-        $("."+@errorizeClass).hide('slow', () => 
-            $("."+@errorizeClass).remove() 
+        $("."+@errorizeClass).hide('slow', () =>
+            $("."+@errorizeClass).remove()
         )
-       

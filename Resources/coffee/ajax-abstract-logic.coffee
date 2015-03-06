@@ -24,7 +24,7 @@ class App.FatalErrorizer.Default extends App.AbstractErrorizer
             @handleFatalErrorResponse($element, response)
         else
             @handleUnknownErrorResponse($element, response) # something else
-   
+
     handleErrorResponse: ($element, response) ->
         message = response.error.xhr.status+" "+response.error.xhr.statusText+" "+@getBasicMessage()
         @renderError($element, message)
@@ -38,7 +38,7 @@ class App.FatalErrorizer.Default extends App.AbstractErrorizer
 
     getBasicMessage: () ->
         "<br/> Please refresh your browser and try again. <br />
-         If the problem persists please inform us about it by contacting our technical support. 
+         If the problem persists please inform us about it by contacting our technical support.
         "
     renderError: ($element, message) ->
         offset = $element.offset()
@@ -47,14 +47,14 @@ class App.FatalErrorizer.Default extends App.AbstractErrorizer
         $('body').append('<div class="ui-widget-overlay fatal-error-modal" style="width:'+$(document).width()+'px; height:'+$(document).height()+'px; "></div>');
 
     clear: =>
-        $("."+@errorizeClass).hide('slow', () => 
+        $("."+@errorizeClass).hide('slow', () =>
             $("."+@errorizeClass).remove()
             $('fatal-error-modal').remove()
         )
 
 
 # Abstract for ajax functionality. Should not be instantiated.
-# Be adviced that you must create your own callback methods in your own 
+# Be adviced that you must create your own callback methods in your own
 # implementation if you are about to use callbackMethod functionality.
 class App.AjaxAbstractLogic
 
@@ -62,12 +62,12 @@ class App.AjaxAbstractLogic
 
     constructor: (@selector, @loader, @errorizers) ->
          # add default fatal errorizer to end
-        if !errorizers  or !errorizers.length
+        if !@errorizers  or !@errorizers.length
             @errorizers = [new App.FatalErrorizer.Default]
         else
             @errorizers.push(new App.FatalErrorizer.Default)
 
-        if !loader
+        if @loader
             @loader = new App.AjaxLoader.Default()
 
     # Get ajax configuration object.
@@ -107,8 +107,8 @@ class App.AjaxAbstractLogic
             @handleFailure(response, @element)
         else if !response.success && !response.failure
 
-            try  # we try to parse response to json because jquery.form does not understand json response after file is uploaded.    
-                parsedResponse = $.parseJSON($(response).text())           
+            try  # we try to parse response to json because jquery.form does not understand json response after file is uploaded.
+                parsedResponse = $.parseJSON($(response).text())
             catch error                                                         # "Not parseable JSON response."
                 @handleFailure(response, @element)
 
@@ -130,13 +130,13 @@ class App.AjaxAbstractLogic
 
         # if successWithContent is defined script will try to find your callback method.
         # if callback method is faulty an exception is thrown
-        if success.content       
+        if success.content
             if !success.callback
                 throw "you don't have callback defined in your response"
             try
                @[success.callback](success.content)
-            catch e 
-                if e instanceof TypeError 
+            catch e
+                if e instanceof TypeError
                     throw "you don't have callback method defined!\n" + e
                 else
                     throw e
@@ -148,7 +148,7 @@ class App.AjaxAbstractLogic
 
     # Calls errorizers to show errors
     displayErrors: ($element, response) =>
-        for errorizer in @errorizers      
+        for errorizer in @errorizers
             if errorizer.errorize $element, response
                 return true
 
