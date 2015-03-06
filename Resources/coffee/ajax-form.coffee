@@ -5,6 +5,7 @@ App.AjaxForm = {}
 class App.AjaxForm.Abstract extends App.AjaxAbstractLogic
 
     constructor: (@selector, @loader, @errorizers) ->
+
         super(@selector, @loader, @errorizers)
         # if there is no initial errorizers add default form errorizer to first of errorizers
         if @errorizers

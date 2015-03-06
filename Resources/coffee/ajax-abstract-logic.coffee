@@ -67,7 +67,7 @@ class App.AjaxAbstractLogic
         else
             @errorizers.push(new App.FatalErrorizer.Default)
 
-        if @loader
+        if !@loader
             @loader = new App.AjaxLoader.Default()
 
     # Get ajax configuration object.
